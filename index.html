@@ -1,10 +1,136 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Hyeonsu Seo</title>
-    <script data-main="main" src="./require.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+    <link rel="stylesheet" href="css\resume_slider.css">
+    <script src="js/slider.js"></script>
+    <style>
+    #main {
+        width: 170px;
+        height: 300px;
+        border: 1px solid #c3c3c3;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-align-content: center;
+        align-content: center;
+    }
+
+    #main div {
+        width: 70px;
+        height: 70px;
+    }
+    </style>
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+
+      <!-- 1. Welcome -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+
+            <header><h1>Welcome :)</h1></header>
+            <section>
+              <div style="">
+                <img src="images/profilepic.jpg" witdh="200px" height="200px"/>
+              </div>
+
+<h1>Software Engineer, I'm Hyeonsu Seo</h1>
+              <div>
+                <p>
+                   Let me introduce to you!</br>
+                   안녕하세요
+                 </p>
+                 <p>도움말:H</p>
+              </div>
+            </section>
+          </div>
+          <footer>
+            <aside class="page_number">1/5</aside>
+          </footer>
+        </div>
+      </div>
+
+
+      <!-- 2. Empty -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            <header><h1>Empty :)</h1></header>
+            <section>
+              <h1></h1>
+
+              <div id="main">
+                <div style="background-color:coral;"></div>
+                <div style="background-color:lightblue;"></div>
+                <div style="background-color:pink;"></div>
+              </div>
+
+            </section>
+          </div>
+          <footer>
+            <aside class="page_number">2/5</aside>
+          </footer>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Landslide</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+
+
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Overview</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+
+
+      <tr id="toc-row-3">
+        <th><a href="#slide3">Code Sample</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+
+
+    </table>
+  </div>
+
+  <div id="help" class="sidebar">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>2
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
 </html>
