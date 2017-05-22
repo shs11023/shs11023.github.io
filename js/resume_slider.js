@@ -14,7 +14,6 @@ var touchStartX = 0;
 var spaces = /\s+/, a1 = [''];
 var tocOpened = false;
 var helpOpened = false;
-var overviewActive = false;
 var modifierKeyDown = false;
 var scale = 1;
 var showingPresenterView = false;
@@ -180,30 +179,6 @@ var prevSlide = function() {
   updateSlideClasses(true);
 };
 
-var showNotes = function() {
-  var notes = getSlideEl(currentSlideNo).getElementsByClassName('notes');
-  for (var i = 0, len = notes.length; i < len; i++) {
-      notes.item(i).style.display = (notesOn) ? 'none':'block';
-  }
-  notesOn = !notesOn;
-};
-
-var showSlideNumbers = function() {
-  var asides = document.getElementsByClassName('page_number');
-  var hidden = asides[0].style.display != 'block';
-  for (var i = 0; i < asides.length; i++) {
-      asides.item(i).style.display = hidden ? 'block' : 'none';
-  }
-};
-
-var showSlideSources = function() {
-  var asides = document.getElementsByClassName('source');
-  var hidden = asides[0].style.display != 'block';
-  for (var i = 0; i < asides.length; i++) {
-      asides.item(i).style.display = hidden ? 'block' : 'none';
-  }
-};
-
 var showToc = function() {
   if (helpOpened) {
           showHelp();
@@ -229,45 +204,6 @@ var showHelp = function() {
   }
 };
 
-var showPresenterView = function() {
-  if (isPresenterView) { return; }
-
-  if (showingPresenterView) {
-      presenterViewWin.close();
-      presenterViewWin = null;
-      showingPresenterView = false;
-  } else {
-      presenterViewWin = open(window.location.pathname + "#presenter" + currentSlideNo, 'presenter_notes',
-                                                              'directories=no,location=no,toolbar=no,menubar=no,copyhistory=no');
-      showingPresenterView = true;
-  }
-};
-
-var switch3D = function() {
-  if (document.body.className.indexOf('three-d') == -1) {
-      document.getElementsByClassName('presentation')[0].style.webkitPerspective = '1000px';
-      document.body.className += ' three-d';
-  } else {
-      window.setTimeout('document.getElementsByClassName(\'presentation\')[0].style.webkitPerspective = \'0\';', 2000);
-      document.body.className = document.body.className.replace(/three-d/, '');
-  }
-};
-
-var toggleOverview = function() {
-  if (!overviewActive) {
-      addClass(document.body, 'expose');
-      overviewActive = true;
-      setScale(1);
-  } else {
-      removeClass(document.body, 'expose');
-      overviewActive = false;
-      if (expanded) {
-          setScale(scale);    // restore scale
-      }
-  }
-  processContext();
-  updateOverview();
-};
 
 var updateOverview = function() {
   try {
@@ -277,7 +213,7 @@ var updateOverview = function() {
   }
 
   if (isPresenterView) {
-      var action = overviewActive ? removeClass : addClass;
+      var action = addClass;
       action(document.body, 'presenter_view');
   }
 
@@ -287,7 +223,7 @@ var updateOverview = function() {
       return;
   }
 
-  if (!tocOpened || !overviewActive) {
+  if (!tocOpened) {
       presentation.style.marginLeft = '0px';
       presentation.style.width = '100%';
   } else {
@@ -313,20 +249,6 @@ var setScale = function(scale) {
   presentation.style.transform = transform;
 };
 
-var expandSlides = function() {
-  if (overviewActive) {
-      return;
-  }
-  if (expanded) {
-      setScale(1);
-      expanded = false;
-  } else {
-      scale = computeScale();
-      setScale(scale);
-      expanded = true;
-  }
-};
-
 var showContext = function() {
   try {
       var presentation = document.getElementsByClassName('slides')[0];
@@ -347,19 +269,6 @@ var processContext = function() {
   } else {
       showContext();
   }
-};
-
-var toggleContext = function() {
-  hiddenContext = !hiddenContext;
-  processContext();
-};
-
-var toggleBlank = function() {
-  blank_elem = document.getElementById('blank');
-
-  blank_elem.style.display = blanked ? 'none' : 'block';
-
-  blanked = !blanked;
 };
 
 var isModifierKey = function(keyCode) {
@@ -390,14 +299,6 @@ var checkModifierKeyDown = function(event) {
 
 var handleBodyKeyDown = function(event) {
   switch (event.keyCode) {
-      case 13: // Enter
-          if (overviewActive) {
-              toggleOverview();
-          }
-          break;
-      case 27: // ESC
-          toggleOverview();
-          break;
       case 37: // left arrow
       case 33: // page up
           event.preventDefault();
@@ -409,50 +310,8 @@ var handleBodyKeyDown = function(event) {
           event.preventDefault();
           nextSlide();
           break;
-      case 50: // 2
-          if (!modifierKeyDown) {
-                  showNotes();
-          }
-          break;
-      case 51: // 3
-          if (!modifierKeyDown && !overviewActive) {
-              switch3D();
-          }
-          break;
-      case 190: // .
-      case 48: // 0
-      case 66: // b
-          if (!modifierKeyDown && !overviewActive) {
-              toggleBlank();
-          }
-          break;
-      case 67: // c
-          if (!modifierKeyDown && !overviewActive) {
-              toggleContext();
-          }
-          break;
-      case 69: // e
-          if (!modifierKeyDown && !overviewActive) {
-              expandSlides();
-          }
-          break;
       case 72: // h
           showHelp();
-          break;
-      case 78: // n
-          if (!modifierKeyDown && !overviewActive) {
-              showSlideNumbers();
-          }
-          break;
-      case 80: // p
-          if (!modifierKeyDown && !overviewActive) {
-              showPresenterView();
-          }
-          break;
-      case 83: // s
-          if (!modifierKeyDown && !overviewActive) {
-              showSlideSources();
-          }
           break;
       case 84: // t
           showToc();
@@ -461,7 +320,7 @@ var handleBodyKeyDown = function(event) {
 };
 
 var handleWheel = function(event) {
-  if (tocOpened || helpOpened || overviewActive) {
+  if (tocOpened || helpOpened ) {
       return;
   }
 
@@ -482,22 +341,6 @@ var handleWheel = function(event) {
       nextSlide();
   } else if (delta) {
       prevSlide();
-  }
-};
-
-var addSlideClickListeners = function() {
-  for (var i=0; i < slides.length; i++) {
-      var slide = slides.item(i);
-      slide.num = i + 1;
-      slide.addEventListener('click', function(e) {
-          if (overviewActive) {
-              currentSlideNo = this.num;
-              toggleOverview();
-              updateSlideClasses(true);
-              e.preventDefault();
-          }
-          return false;
-      }, true);
   }
 };
 
@@ -565,7 +408,6 @@ var addTocLinksListeners = function() {
       }, false);
 
   /*window.onmousewheel =*/ document.onmousewheel = handleWheel;
-  window.onresize = expandSlides;
 
   for (var i = 0, el; el = slides[i]; i++) {
       addClass(el, 'slide far-future');
@@ -576,8 +418,6 @@ var addTocLinksListeners = function() {
   addTouchListeners();
 
   addTocLinksListeners();
-
-  addSlideClickListeners();
 
   addRemoteWindowControls();
 })();

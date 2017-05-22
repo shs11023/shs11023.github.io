@@ -1,0 +1,53 @@
+#page_welcome {
+    width: 640px;
+    height: 480px;
+    border: 1px solid #888;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+
+#welcome_photo {
+    width: 200px;
+    height: 200px;
+}
+
+#welcome_greetings {
+    width: 440px;
+    height: 150px;
+    margin-top:50px;
+}
+
+#welcome_shortcut {
+    width: 640px;
+    height: 100px;
+    text-align: center;
+}
+
+
+#page_aboutme {
+    width: 640px;
+    height: 480px;
+    border: 1px solid #888;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+
+#page_workexperiences {
+    width: 640px;
+    height: 480px;
+    border: 1px solid #888;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
