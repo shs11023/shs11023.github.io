@@ -1,252 +1,157 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Hyeonsu Seo</title>
-    <link rel="stylesheet" href="css\resume_slider.css">
-    <link rel="stylesheet" href="css\resume_tab.css">
-    <link rel="stylesheet" href="css\resume_contents.css">
-    <script src="js/resume_slider.js"></script>
-    <script src="js/resume_tab.js"></script>
-    <style>
-    </style>
-</head>
-<body>
-  <div id="blank"></div>
-  <div class="presentation">
-    <div id="current_presenter_notes">
-      <div id="presenter_note"></div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <link href="css/resume.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+    var subpages = [      "subpages/temp.html",
+      "subpages/welcome.html",
+      "subpages/aboutme.html",
+      "subpages/works.html",
+      "subpages/studies.html",
+      "subpages/portfolio.html",
+      "subpages/contract.html"
+    ];
+    var current_page_index = 0;
+
+    var handleWheel = function(event) {
+      var delta = 0;
+      if (!event) {
+          event = window.event;
+      }
+
+      if (event.wheelDelta) {
+          delta = event.wheelDelta/120;
+          if (window.opera) delta = -delta;
+      } else if (event.detail) {
+          delta = -event.detail/3;
+      }
+
+      if (delta && delta <0) {
+          move_nextpage();
+      } else if (delta) {
+          move_prevpage();
+      }
+    };
+
+    var move_nextpage = function() {
+      if(current_page_index < (subpages.length-1))
+        current_page_index++;
+      else current_page_index = 0;
+      refresh_contents();
+    };
+    var move_prevpage = function() {
+      if(current_page_index > 0) current_page_index--;
+      else current_page_index = subpages.length-1;
+      refresh_contents();
+    };
+    var move_pageByIndex = function(index) {
+      current_page_index = index;
+      refresh_contents();
+    };
+    var refresh_contents = function() {
+      var contents = document.getElementById("contents");
+      var file = subpages[current_page_index];
+      if (file) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              contents.innerHTML = this.responseText;
+            }
+          }
+          xhttp.open("GET", file, true);
+          xhttp.send();
+          return;
+        }
+    };
+
+    function changeTab(evt, tabGroupName, currentNode, contentName) {
+        var tabChilds = document.getElementById(tabGroupName).getElementsByTagName("li");
+        for (i = 0; i < tabChilds.length; i++) {
+          if(tabChilds[i] == currentNode) {
+            tabChilds[i].className = 'active';
+          }
+          else {
+            tabChilds[i].className = '';
+          }
+        }
+
+        var tabContentChilds = document.getElementsByClassName(tabGroupName)
+        for (i = 0; i < tabContentChilds.length; i++) {
+          tabContentChilds[i].style.display = "none";
+        }
+        document.getElementById(contentName).style.display = "block";
+    };
+
+    function main() {
+      document.addEventListener('DOMMouseScroll', handleWheel, false);
+      document.onmousewheel = handleWheel;
+
+      refresh_contents();
+    };
+    </script>
+  </head>
+  <body onload="main();">
+    <div class="site-wrapper">
+      <div class="cover-container">
+        <!-- top menu -->
+        <div class="masthead clearfix">
+          <div class="inner">
+            <div class="masthead-brand">
+              <h2 style="margin:0">Software Engineer,</h2><br/>
+              <h3 style="margin:0">Hyeonsu Seo</h3>
+            </div>
+            <nav>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Download (resume.pdf)</a></li>
+                <li><a href="#" onclick="move_pageByIndex(subpages.length-1);">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div> <!--masthead clearfix -->
+
+        <!-- contents -->
+        <div class="cover">
+          <div class="inner" style="padding-top: 0;" id="contents">
+          </div> <!-- inner cover -->
+
+          <div style="padding-top: 10px;">
+            <a href="#" onclick="move_prevpage();"><span class="glyphicon glyphicon-hand-left" aria-hidden="true"></span> Prev</a>
+            <a href="#" onclick="move_nextpage();">Next <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span></a>
+          </div>
+        </div> <!-- inner cover -->
+
+        <div>
+          <div class="inner">
+            <p>update date @ <a href="#">27-May-2017</a></p>
+          </div>
+        </div>
+      </div> <!-- cover-container -->
     </div>
-    <div class="slides">
-
-      <!-- 1. Welcome -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-
-            <header><h1>WELCOME :)</h1></header>
-            <section>
-
-              <div id="page_welcome">
-                <div id="welcome_photo">
-                  <img src="images/profilepic.jpg" witdh="200px" height="200px" style="clip-path: circle(60px at center);"/>
-                </div>
-
-                <div id="welcome_greetings">
-                  <h2>
-                    Hi! <br/>
-                    I'm <b>Hyeonsu Seo</b>. <br/>
-                    a software engineer. <br/>
-                  </h2>
-                </div>
-
-                <div id="welcome_shortcut">
-                  HELP:H | OVERVIEW:T
-                </div>
-              </div> <!-- page_welcome -->
-
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">1/6</aside>
-          </footer>
-        </div>
-      </div>
-
-      <!-- 2. About me -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            <header><h1>About me</h1></header>
-            <section>
-
-              <div id="page_aboutme">
-                <div>
-              호기심으로 시작한 게임 개발을 시작으로 첫 소프트웨어 개발을 알게 되었습니다.<br/>
-              소프트웨어 개발 관련 전공을 하였습니다.<br/>
-              민첩한 소프트웨어 개발을 추구합니다.<br/>
-              요구사항의 문제해결을 통해 성취감을 느낌니다.<br/>
-              사용자에게 진보된 가치를 주는 소프트웨어 개발을 추구합니다.<br/>
-              십년 후에도 소프트웨어 개발을 하고 있을것 입니다.<br/>
-                </div>
-              </div> <!-- page_aboutme -->
-
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">2/6</aside>
-          </footer>
-        </div>
-      </div>
-
-
-      <!-- 3. Work Experiences -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            <header><h1>Work Experiences</h1></header>
-            <section>
-
-              <div id="page_workexperiences">
-                <div>
-                  <div class="tab">
-                    <button class="tablinks" onclick="openCity(event, 'GreenWave_Systems')">GreenWave Systems</button>
-                    <button class="tablinks" onclick="openCity(event, 'S-Core')">S-Core</button>
-                    <button class="tablinks" onclick="openCity(event, 'HUMAX')">HUMAX</button>
-                  </div>
-
-                  <div id="GreenWave_Systems" class="tabcontent" style="display: block; background-image: url('images/work_greenwave-logo.png');">
-                    <p>
-                      Greenware Systems 2016.06 ~ Current <br/>
-                      <ul>
-                        <pre>Verzion IPTV</pre>
-                            <ul>
-                              <li>MPEG-DASH기반 미들웨어 구현 및 디버깅</li>
-                              <li>Google Test 기반 유닛 테스트 설계 및 구현</li>
-                            </ul>
-                        <pre>Verzion FiOS</pre>
-                            <ul>
-                              <li>DLAN Client 미들웨어 구현 및 디버깅</li>
-                              <li>Playback 안정화 및 성능향상 구현</li>
-                            </ul>
-                        <pre>주요기술</pre>
-                            <ul><li>C++11, STL, TCP/IP</li></ul>
-                      </ul>
-                    </p>
-                  </div>
-
-                  <div id="S-Core" class="tabcontent" style="background-image: url('images/work_score-logo.png');">
-                    <h3>S-Core</h3>
-                    <p>Paris is the capital of France.</p>
-                  </div>
-
-                  <div id="HUMAX" class="tabcontent" style="background-image: url('images/work_humax-logo.png');">
-                    <h3>HUMAX</h3>
-                    <p>Tokyo is the capital of Japan.</p>
-                  </div>
-
-                </div>
-              </div> <!-- page_workexperiences -->
-
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">3/6</aside>
-          </footer>
-        </div>
-      </div>
-
-
-      <!-- 4. Studies -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            <header><h1>Studies</h1></header>
-            <section>
-              <h1></h1>
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">4/6</aside>
-          </footer>
-        </div>
-      </div>
-
-
-      <!-- 5. Portfolio -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            <header><h1>Portfolio</h1></header>
-            <section>
-              <h1></h1>
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">5/6</aside>
-          </footer>
-        </div>
-      </div>
-
-      <!-- 6. Portfolio -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            <header><h1>Contact</h1></header>
-            <section>
-              <h1></h1>
-            </section>
-          </div>
-          <footer>
-            <aside class="page_number">6/6</aside>
-          </footer>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div id="toc" class="sidebar hidden">
-    <h2>Overview</h2>
-    <table>
-      <caption>Overview</caption>
-      <tr id="toc-row-1">
-        <th><a href="#slide1">Overview</a></th>
-        <td><a href="#slide1">1</a></td>
-      </tr>
-      <tr id="toc-row-2">
-        <th><a href="#slide2">About me</a></th>
-        <td><a href="#slide2">2</a></td>
-      </tr>
-      <tr id="toc-row-3">
-        <th><a href="#slide3">Work Experiences</a></th>
-        <td><a href="#slide3">3</a></td>
-      </tr>
-      <tr id="toc-row-4">
-        <th><a href="#slide4">Studies</a></th>
-        <td><a href="#slide4">4</a></td>
-      </tr>
-      <tr id="toc-row-5">
-        <th><a href="#slide5">Portfolio</a></th>
-        <td><a href="#slide5">5</a></td>
-      </tr>
-      <tr id="toc-row-6">
-        <th><a href="#slide6">Contact</a></th>
-        <td><a href="#slide6">6</a></td>
-      </tr>
-    </table>
-  </div> <!-- Table of Contents -->
-
-  <div id="help" class="sidebar">
-    <h2>Help</h2>
-    <table>
-      <caption>Shortcut</caption>
-      <tr>
-        <th>Overview</th>
-        <td>t</td>
-      </tr>
-      <tr>
-        <th>Help</th>
-        <td>h</td>
-      </tr>
-    </table>
-  </div> <!-- help -->
-
-  <div id="menu" class="topmenu">
-    <table>
-      <tr>
-        <td>GREETINGS</td>
-        <td>ABOUT</td>
-        <td>WORK</td>
-        <td>STUDY</td>
-        <td>PORTFOLIO</td>
-        <td>CONTACT</td>
-      </tr>
-    </table>
-  </div> <!-- menu -->
-
-
-  <script>main()</script>
-</body>
+  </body>
 </html>
